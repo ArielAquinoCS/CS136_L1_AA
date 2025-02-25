@@ -62,7 +62,7 @@ void readRecords(CarRecord records[], int &count) {
     if (!inputFile) { cerr << "Error opening file!\n"; return; }
 
     string line;
-    while (getline(inputFile, line)) {
+    while (getline(inputFile, line) && count < MAX_RECORDS) {  // Added condition
         string carID, model, manufacturer;
         int quantity;
         double price;
@@ -76,8 +76,7 @@ void readRecords(CarRecord records[], int &count) {
         if (price <= MIN_PRICE) errorMsg += " Price below limit;";
 
         if (!errorMsg.empty()) writeInvalidRecord(line, errorMsg);
-        else if (count < MAX_RECORDS) records[count++] = {carID, model, manufacturer, quantity, price};
-        else { cerr << "Array full. Cannot store more records.\n"; break; }
+        else records[count++] = {carID, model, manufacturer, quantity, price};
     }
 
     inputFile.close();
